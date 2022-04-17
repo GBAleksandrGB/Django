@@ -1,12 +1,5 @@
 <ul class="menu">
-    {% for link in links_menu %}
-        <li>
-            <a href="{% url link.href %}"
-               class="{% if request.resolver_match.url_name == link.href %}
-                        active
-                      {% endif %}">
-               {{ link.name }}
-            </a>
-        </li>
-    {% endfor %}
+    <li><a href="{% url 'main' %}" class="active">домой</a></li>
+    <li><a href="{% url 'products:index' %}">продукты</a></li>
+    <li><a href="{% url 'contact' %}">контакты</a></li>
 </ul>
