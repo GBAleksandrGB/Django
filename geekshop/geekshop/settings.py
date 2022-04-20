@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainapp.apps.MainappConfig',
+    'authapp.apps.AuthappConfig'
 ]
+
+AUTH_USER_MODEL = 'authapp.ShopUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
