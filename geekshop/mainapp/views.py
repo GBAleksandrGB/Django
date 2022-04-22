@@ -1,6 +1,7 @@
 from django.shortcuts import render
-
-from .models import Product
+from django.shortcuts import get_object_or_404
+from .models import Product, ProductCategory
+from basketapp.models import Basket
 
 
 def main(request):
@@ -26,15 +27,37 @@ def products(request, pk=None):
         {'href': 'products', 'name': 'Продукты'},
         {'href': 'contact', 'name': 'Контакты'},
     ]
-    links_products = [
-        {'href': 'products_all', 'name': 'все'},
-        {'href': 'products_home', 'name': 'дом'},
-        {'href': 'products_office', 'name': 'офис'},
-        {'href': 'products_modern', 'name': 'модерн'},
-        {'href': 'products_classic', 'name': 'классика'},
-    ]
-    content = {'title': title, 'links_menu': links_menu, 'links_products': links_products}
-    print(pk)
+    links_products = ProductCategory.objects.all()
+
+    basket = []
+    if request.user.is_authenticated:
+        basket = Basket.objects.filter(user=request.user)
+
+    if pk is not None:
+        if pk == 0:
+            products = Product.objects.all().order_by('price')
+            category = {'name': "Все"}
+        else:
+            category = get_object_or_404(ProductCategory, pk=pk)
+            products = Product.objects.filter(category__pk=pk).order_by('price')
+
+        content = {
+            'title': title,
+            'links_menu': links_menu,
+            'links_products': links_products,
+            'category': category,
+            'products': products,
+            'basket': basket,
+        }
+        return render(request, 'mainapp/products_list.html', content)
+
+    same_products = Product.objects.all()[:]
+    content = {
+        'title': title,
+        'links_menu': links_menu,
+        'links_products': links_products,
+        'same_products': same_products
+    }
     return render(request, 'mainapp/products.html', content)
 
 

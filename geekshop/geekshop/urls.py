@@ -23,16 +23,11 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', main, name='main'),
     path('products/', include('mainapp.urls', namespace='products')),
+    path('basket/', include('basketapp.urls', namespace='basket')),
     path('contact/', contact, name='contact'),
 
     path('admin/', admin.site.urls),
     path('auth/', include('authapp.urls', namespace='auth')),
-
-    path('products_all/', products, name='products_all'),
-    path('products_home/', products, name='products_home'),
-    path('products_office/', products, name='products_office'),
-    path('products_modern/', products, name='products_modern'),
-    path('products_classic/', products, name='products_classic'),
 ]
 
 if settings.DEBUG:
