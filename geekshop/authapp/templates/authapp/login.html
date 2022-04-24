@@ -5,6 +5,9 @@
 
 <form class="form-group" action="{% url 'auth:login' %}" method="POST">
     {% csrf_token %}
+    {% if next %}
+    <input type="hidden" name="next" value="{{ next }}">
+    {% endif %}
     {{ login_form.as_p }}
     <br>
     <button type="submit" class="btn btn-primary form-control">войти</button>
