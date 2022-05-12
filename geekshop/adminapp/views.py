@@ -182,6 +182,7 @@ def product_delete(request, pk):
 class UserCreateView(LoginRequiredMixin, CreateView):
     model = ShopUser
     template_name = 'adminapp/user_update.html'
+    success_url = reverse_lazy('admin:users')
     fields = '__all__'
 
 
