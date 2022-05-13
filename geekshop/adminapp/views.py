@@ -2,7 +2,7 @@ from authapp.models import ShopUser
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, render, HttpResponseRedirect
 from django.views.generic import DetailView
-from mainapp.models import Product, ProductCategoryUpdateView
+from mainapp.models import Product, ProductCategory
 from django.contrib.auth.decorators import user_passes_test
 from django.urls import reverse, reverse_lazy
 from authapp.forms import ShopUserRegisterForm
@@ -76,7 +76,7 @@ def user_delete(request, pk):
 @user_passes_test(lambda u: u.is_superuser)
 def categories(request):
     title = 'админка/категории'
-    categories_list = ProductCategoryUpdateView.objects.all()
+    categories_list = ProductCategory.objects.all()
     content = {
         'title': title,
         'objects': categories_list
@@ -102,7 +102,7 @@ def category_delete(request, pk):
 @user_passes_test(lambda u: u.is_superuser)
 def products(request, pk):
     title = 'админка/продукт'
-    category = get_object_or_404(ProductCategoryUpdateView, pk=pk)
+    category = get_object_or_404(ProductCategory, pk=pk)
     products_list = Product.objects.filter(category__pk=pk).order_by('name')
     content = {
         'title': title,
@@ -115,7 +115,7 @@ def products(request, pk):
 @user_passes_test(lambda u: u.is_superuser)
 def product_create(request, pk):
     title = 'Продукт/создание'
-    category = get_object_or_404(ProductCategoryUpdateView, pk=pk)
+    category = get_object_or_404(ProductCategory, pk=pk)
 
     if request.method == 'POST':
         product_form = ProductEditForm(request.POST, request.FILES)
@@ -182,7 +182,6 @@ def product_delete(request, pk):
 class UserCreateView(LoginRequiredMixin, CreateView):
     model = ShopUser
     template_name = 'adminapp/user_update.html'
-    success_url = reverse_lazy('admin:users')
     fields = '__all__'
 
 
@@ -215,14 +214,14 @@ class UserDeleteView(DeleteView):
 
 
 class ProductCategoryCreateView(CreateView):
-    model = ProductCategoryUpdateView
+    model = ProductCategory
     template_name = 'adminapp/category_update.html'
     success_url = reverse_lazy('admin:categories')
     fields = '__all__'
 
 
 class ProductCategoryUpdateView(UpdateView):
-    model = ProductCategoryUpdateView
+    model = ProductCategory
     template_name = 'adminapp/category_update.html'
     success_url = reverse_lazy('admin:categories')
     fields = '__all__'
@@ -234,7 +233,7 @@ class ProductCategoryUpdateView(UpdateView):
 
 
 class ProductCategoryDeleteView(DeleteView):
-    model = ProductCategoryUpdateView
+    model = ProductCategory
     template_name = 'adminapp/category_delete.html'
     success_url = reverse_lazy('admin:categories')
 
