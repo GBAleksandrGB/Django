@@ -18,7 +18,7 @@ def basket(request):
         'title': title,
         'basket_items': basket_items,
     }
-    return render(request, 'basketapp/list.html', context)
+    return render(request, 'basketapp/basket.html', context)
 
 
 @login_required
