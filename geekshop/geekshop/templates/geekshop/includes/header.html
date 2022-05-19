@@ -15,11 +15,7 @@
                 {% if user.is_superuser %}
                     <li><a class="dropdown-item" href="{% url 'admin_stuff:users' %}">Админка</a></li>
                 {% endif %}
-
-                {% if basket %}
-                    <li><a class="dropdown-item" href="{% url 'basket:view' %}">Корзина</a>
-                    </li>
-                {% endif %}
+                    <li><a class="dropdown-item" href="{% url 'basket:view' %}">Корзина</a></li>
                     <li>
                         {% if user.is_authenticated %}
                             <a href="{% url 'auth:logout' %}">выйти</a>
