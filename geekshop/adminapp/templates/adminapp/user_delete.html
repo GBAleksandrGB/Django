@@ -2,20 +2,38 @@
 {% load static %}
 
 {% block content %}
-<div class="user_delete">
-    Уверены, что хотите удалить {{ object.username }}
-    {% if object.first_name %}
-        ({{ object.first_name|title }}
-        {% if object.last_name %}
-            {{ object.last_name|title }}
-        {% endif %})
-    {% endif %}
-    ?
-    <form action="{% url 'admin:user_delete' object.pk %}" method="post">
-        {% csrf_token %}
-        <input class="btn btn-danger" type="submit" value="удалить">
-    </form>
-    <button class="btn btn-success"><a href="{% url 'admin:users' %}">Отмена</a>
-    </button>
-</div>
+    <main>
+        <div class="container-fluid">
+            <h1 class="mt-4">Пользователи</h1>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table mr-1"></i>
+                    {{ title|title }}
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        Уверены, что хотите удалить {{ object.username }}
+                        {% if object.first_name %}
+                          ({{ object.first_name|title }}</b>
+                          {% if object.last_name %}
+                            {{ object.last_name|title }}
+                          {% endif %})
+                        {% endif %}
+                        ?
+                        <form action="{% url 'admin_stuff:user_delete' object.pk %}"
+                              method="post">
+                          {% csrf_token %}
+                          <input class="btn btn-danger" type="submit" value="удалить">
+                        </form>
+
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'admin_stuff:users' %}">
+                        <button class="btn btn-success">Отмена</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}
