@@ -93,6 +93,10 @@ def edit(request):
 
     return render(request, 'authapp/edit.html', context)
 
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        return super(ListView, self).dispatch(*args, **kwargs)
+
 
 def verify(request, email, activation_key):
     try:
