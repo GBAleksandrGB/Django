@@ -1,9 +1,8 @@
 import random
 
-from django.shortcuts import render, get_object_or_404
-
-from mainapp.models import Product, ProductCategory
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render, get_object_or_404
+from mainapp.models import Product, ProductCategory
 
 
 def get_hot_product():
@@ -14,7 +13,6 @@ def get_hot_product():
 
 def get_same_products(hot_product):
     same_products = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk).order_by('price')
-
     return same_products
 
 
