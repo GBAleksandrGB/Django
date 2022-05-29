@@ -5,7 +5,7 @@ from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
+from django.views.generic import ListView
 from .forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm, ShopUserProfileEditForm
 from .models import ShopUser
 

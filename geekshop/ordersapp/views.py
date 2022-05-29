@@ -42,7 +42,6 @@ class OrderList(ListView):
         return super(ListView, self).dispatch(*args, **kwargs)
 
 
-
 class OrderItemsCreate(CreateView):
     model = Order
     fields = []
@@ -116,7 +115,6 @@ class OrderItemsUpdate(UpdateView):
             self.object.delete()
         return super(OrderItemsUpdate, self).form_valid(form)
 
-
     @method_decorator(login_required())
     def dispatch(self, *args, **kwargs):
         return super(UpdateView, self).dispatch(*args, **kwargs)
@@ -135,11 +133,9 @@ class OrderRead(DetailView):
         context['title'] = 'заказ/просмотр'
         return context
     
-
     @method_decorator(login_required())
     def dispatch(self, *args, **kwargs):
         return super(DetailView, self).dispatch(*args, **kwargs)
-
 
 
 def order_forming_complete(request, pk):

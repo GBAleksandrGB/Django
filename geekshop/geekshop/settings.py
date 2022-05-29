@@ -14,7 +14,6 @@ from pathlib import Path
 import os
 import environ
 
-
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -68,6 +67,7 @@ SOCIAL_AUTH_VK_OAUTH2_KEY = env.str('SOCIAL_AUTH_VK_OAUTH2_KEY')
 SOCIAL_AUTH_VK_OAUTH2_SECRET = env.str('SOCIAL_AUTH_VK_OAUTH2_SECRET')
 
 MIDDLEWARE = [
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -78,11 +78,13 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 if DEBUG:
     def show_toolbar(request):
         return True
+
 
     DEBUG_TOOLBAR_CONFIG = {
         'SHOW_TOOLBAR_CALLBACK': show_toolbar,
@@ -104,7 +106,6 @@ if DEBUG:
         'debug_toolbar.panels.profiling.ProfilingPanel',
         'template_profiler_panel.panels.template.TemplateProfilerPanel',
     ]
-
 
 ROOT_URLCONF = 'geekshop.urls'
 
@@ -157,10 +158,10 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
 
-    # 'default': {
-    #     'NAME': 'geekshop',
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'USER': 'postgres',
+        # 'default': {
+        #     'NAME': 'geekshop',
+        #     'ENGINE': 'django.db.backends.postgresql',
+        #     'USER': 'postgres',
     }
 }
 
@@ -236,3 +237,18 @@ LOGIN_URL = '/auth/login/'
 # EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 #
 # EMAIL_FILE_PATH = 'tmp/email-messages/'
+
+
+if os.name == 'posix':
+    CACHE_MIDDLEWARE_ALIAS = 'default'
+    CACHE_MIDDLEWARE_SECONDS = 120
+    CACHE_MIDDLEWARE_KEY_PREFIX = 'geekshop'
+
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': '127.0.0.1:11211',
+        }
+    }
+
+LOW_CACHE = True
