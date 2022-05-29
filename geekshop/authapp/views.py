@@ -5,7 +5,7 @@ from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
+from django.views.generic import ListView
 from .forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm, ShopUserProfileEditForm
 from .models import ShopUser
 
@@ -92,6 +92,10 @@ def edit(request):
     context = {'title': title, 'edit_form': edit_form, 'profile_form': profile_form}
 
     return render(request, 'authapp/edit.html', context)
+
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        return super(ListView, self).dispatch(*args, **kwargs)
 
 
 def verify(request, email, activation_key):
