@@ -1,3 +1,4 @@
+from django.db.models import F
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
@@ -7,6 +8,10 @@ from .models import Basket
 from mainapp.models import Product
 
 from django.contrib.auth.decorators import login_required
+
+
+def is_ajax(request):
+    return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
 
 
 @login_required
@@ -34,6 +39,7 @@ def basket_add(request, pk):
         basket = Basket(user=request.user, product=product)
 
     basket.quantity += 1
+    # basket.quantity = F('quantity') + 1
     basket.save()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

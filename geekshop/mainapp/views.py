@@ -7,7 +7,7 @@ from django.core.cache import cache
 from django.views.decorators.cache import cache_page
 
 from .management.commands.fill_db import load_from_json
-from mainapp.models import Product, ProductCategory
+from .models import Product, ProductCategory
 
 
 def get_links_menu():

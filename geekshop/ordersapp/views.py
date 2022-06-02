@@ -1,3 +1,4 @@
+from django.db.models import F
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
@@ -15,7 +16,6 @@ from .forms import OrderItemForm
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-
 
 
 def is_ajax(request):
@@ -148,16 +148,16 @@ def order_forming_complete(request, pk):
 @receiver(pre_save, sender=OrderItem)
 @receiver(pre_save, sender=Basket)
 def product_quantity_update_save(sender, update_fields, instance, **kwargs):
-    if update_fields is 'quantity' or 'product':
+    if update_fields == 'quantity' or update_fields == 'product':
         if instance.pk:
-            instance.product.quantity -= instance.quantity - sender.get_item(instance.pk).quantity
+            instance.product.quantity -= F('quantity') - sender.get_item(instance.pk).quantity
     else:
-        instance.product.quantity -= instance.quantity
+        instance.product.quantity = F('quantity') - instance.quantity
     instance.product.save()
 
 
 @receiver(pre_delete, sender=OrderItem)
 @receiver(pre_delete, sender=Basket)
 def product_quantity_update_delete(sender, instance, **kwargs):
-    instance.product.quantity += instance.quantity
+    instance.product.quantity = F('quantity') + instance.quantity
     instance.product.save()
